@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "557248170090",
+    "firebase_url": "https://charzard-45361.firebaseio.com",
+    "project_id": "charzard-45361",
+    "storage_bucket": "charzard-45361.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557248170090:android:c813fc27f40fb0c9",
+        "android_client_info": {
+          "package_name": "nessi.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557248170090-gdm1jiq3m6unv7ihjnpbelk3hgu0ku4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrpKW-OgWAuMmFhvcMzlFYlXkGHrA3o0Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:557248170090:android:5f866a2df5bc5496",
+        "android_client_info": {
+          "package_name": "nessi.main"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "557248170090-idcuu0h3eo5et76k77c2ku8i20rtgs90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nessi.main",
+            "certificate_hash": "c13762b8a8e5b722be7ed7d8970323fe63d0f255"
+          }
+        },
+        {
+          "client_id": "557248170090-gdm1jiq3m6unv7ihjnpbelk3hgu0ku4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrpKW-OgWAuMmFhvcMzlFYlXkGHrA3o0Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "557248170090-gdm1jiq3m6unv7ihjnpbelk3hgu0ku4j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

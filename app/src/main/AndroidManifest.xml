@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="nessi.main">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name="nessi.main.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="nessi.main.login"
+            android:label="@string/title_activity_login"
+            android:parentActivityName="nessi.main.Splash"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.Splash" />
+        </activity>
+        <activity
+            android:name="nessi.main.homescreen"
+            android:label="@string/title_activity_homescreen"
+            android:parentActivityName="nessi.main.login"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.login" />
+        </activity>
+        <activity
+            android:name="nessi.main.ChallengeListScreen"
+            android:label="@string/title_activity_challengelist"
+            android:parentActivityName="nessi.main.homescreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.homescreen" />
+        </activity>
+        <activity
+            android:name="nessi.main.ChallengeScreen"
+            android:label="ChallengeScreen"
+            android:parentActivityName="nessi.main.ChallengeListScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.ChallengeListScreen" />
+        </activity>
+        <activity
+            android:name="nessi.main.Challenger"
+            android:label="@string/title_activity_challenger"
+            android:parentActivityName="nessi.main.ChallengeListScreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.ChallengeListScreen" />
+        </activity>
+        <activity
+            android:name="nessi.main.Executor"
+            android:label="@string/title_activity_executor"
+            android:parentActivityName="nessi.main.homescreen"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.homescreen" />
+        </activity>
+        <activity
+            android:name="nessi.main.ExecutorScreen"
+            android:label="ExecutorScreen"
+            android:parentActivityName="nessi.main.Executor"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="nessi.main.Executor" />
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">CHazard</string>
+    <string name="title_activity_login">login</string>
+    <string name="title_activity_homescreen">homescreen</string>
+    <string name="title_activity_challengelist">ChallengeListScreen</string>
+    <string name="title_activity_challenger">Challenger</string>
+    <string name="title_activity_executor">Executor</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Challengelist -->
+    <string name="mychallenges">My Challenges</string>
+    <string name="addchallenge">add</string>
+
+    <!-- Challengelist items -->
+    <string name="titleitem">Title:\u0020</string>
+    <string name="rewarditem">Reward:\u0020</string>
+    <string name="descriptionitem">Description:\u0020</string>
+
+    <!-- Challenge update -->
+    <string name="titlehead">Title</string>
+    <string name="titlehint">Enter New Title</string>
+    <string name="rewardhead">Reward</string>
+    <string name="rewardhint">Enter New Reward</string>
+    <string name="descriptionhead">Description</string>
+    <string name="descriptionhint">Enter New Description</string>
+
+    <!-- Challenges -->
+    <string name="challenges">challenges</string>
+    <string name="title">Title...</string>
+    <string name="reward">Reward!</string>
+    <string name="do_this_and_that">Do this and do that..</string>
+    <string name="cancel">cancel</string>
+    <string name="start">start</string>
+    <string name="addexecutor">addexecutor</string>
+    <string name="video">video</string>
+    <string name="image">image</string>
+    <string name="buttonPlay">play</string>
+    <string name="buttonStop">stop</string>
+
+
+    <!-- Names -->
+    <string-array name="Member_names">
+        <item>Robert</item>
+        <item>Shanni</item>
+        <item>Rachael</item>
+        <item>Maddy</item>
+        <item>Kate</item>
+        <item>Nikhil</item>
+        <item>Alessa</item>
+        <item>Tyler</item>
+    </string-array>
+
+    <!-- Pictures -->
+    <array name="profile_pics">
+        <item>@drawable/robert</item>
+        <item>@drawable/shanni</item>
+        <item>@drawable/rachael</item>
+        <item>@drawable/maddy_pic</item>
+        <item>@drawable/kate</item>
+        <item>@drawable/nikhil_pic</item>
+        <item>@drawable/kate</item>
+        <item>@drawable/robert</item>
+    </array>
+
+    <!-- Status -->
+    <array name="statues">
+        <item>@drawable/diamond</item>
+        <item>@drawable/silver</item>
+        <item>@drawable/gold</item>
+        <item>@drawable/bronze</item>
+        <item>@drawable/bronze</item>
+        <item>@drawable/silver</item>
+        <item>@drawable/bronze</item>
+        <item>@drawable/bronze</item>
+    </array>
+
+
+    <!-- Names -->
+    <string-array name="texts">
+        <item>Jump</item>
+        <item>Kill Spider</item>
+        <item>Hate it</item>
+        <item>Eat that</item>
+        <item>Be it</item>
+        <item>Snooze</item>
+        <item>Just do it</item>
+        <item>Feel it</item>
+    </string-array>
+
+    <!-- Pictures -->
+    <string-array name="titles">
+        <item>Bored?</item>
+        <item>Risky</item>
+        <item>Lets Play</item>
+        <item>Hilarious</item>
+        <item>DO IT!</item>
+        <item>Easy Game</item>
+        <item>Funny</item>
+        <item>Cool</item>
+    </string-array>
+
+    <!-- Status -->
+    <integer-array name="reward">
+        <item>65</item>
+        <item>40</item>
+        <item>60</item>
+        <item>90</item>
+        <item>30</item>
+        <item>85</item>
+        <item>90</item>
+        <item>15</item>
+    </integer-array>
+
+    <!-- contact type -->
+    <integer-array name="id">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+</resources>

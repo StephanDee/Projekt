@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/polygonbg" >
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/opaBlack">
+
+        <TextView
+            android:id="@+id/TextViewChallengeChallenger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:text="Challenger"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/buttonAccept"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_column="2"
+            android:layout_margin="10dp"
+            android:layout_row="0"
+            android:background="@color/darkBlue"
+            android:text="Accept"
+            android:textColor="@color/white" />
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/textViewChallengeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:gravity="center"
+        android:text="Title"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
+        android:background="@color/opaBlack"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/black">
+
+        <VideoView
+            android:id="@+id/videoViewChallenge"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:contentDescription="@string/video"/>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/buttonPlay"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_column="0"
+                android:layout_row="1"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:text="@string/buttonPlay"/>
+
+            <Button
+                android:id="@id/buttonStop"
+                android:layout_width="70dp"
+                android:layout_height="35dp"
+                android:layout_column="1"
+                android:layout_row="1"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:text="@string/buttonStop"/>
+        </GridLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/opaBlack">
+
+        <TextView
+            android:id="@+id/textViewChallengeReward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rewarditem"
+            android:textColor="@color/white"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/imageViewChallengePoints"
+            android:layout_toStartOf="@+id/imageViewChallengePoints" />
+
+        <ImageView
+            android:id="@+id/imageViewChallengePoints"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/pointswhite"
+            android:layout_alignBottom="@+id/textViewChallengeReward"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="image" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textViewChallengeDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Description"
+        android:textColor="@color/white"
+        android:background="@color/opaBlack" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="5dp"
+            android:paddingStart="5dp"
+            android:text="Executors: "
+            android:textColor="@color/white"
+            android:background="@color/opaBlack"/>
+
+    <ListView
+        android:id="@+id/listViewExecutors"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/opaBlack" />
+
+</LinearLayout>
