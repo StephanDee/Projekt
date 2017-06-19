@@ -21,20 +21,18 @@
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/light"
-        android:hint="Username.."
+        android:hint="Enter E-Mail Adress"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="@color/light"
-        android:hint="Password.."
+        android:hint="Enter Password"
         android:inputType="textPassword" />
 
     <LinearLayout

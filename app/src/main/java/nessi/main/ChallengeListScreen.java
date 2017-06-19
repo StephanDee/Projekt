@@ -1,5 +1,6 @@
 package nessi.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,8 @@ public class ChallengeListScreen extends AppCompatActivity {
     ListView listViewChallenges;
     List<Challenge> challengeList;
 
+    ProgressDialog progressDialog;
+
     // Initialize the DatabaseReference
     DatabaseReference databaseChallenges;
 
@@ -44,6 +47,8 @@ public class ChallengeListScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challengelist);
+
+        progressDialog = new ProgressDialog(this);
 
         databaseChallenges = FirebaseDatabase.getInstance().getReference("challenges");
 
@@ -84,6 +89,9 @@ public class ChallengeListScreen extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        progressDialog.setMessage("loading...");
+        progressDialog.show();
+
         databaseChallenges.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -95,9 +103,9 @@ public class ChallengeListScreen extends AppCompatActivity {
 
                     challengeList.add(challenge);
                 }
-
                 ChallengeListe adapter = new ChallengeListe(ChallengeListScreen.this, challengeList);
                 listViewChallenges.setAdapter(adapter);
+                progressDialog.dismiss();
             }
 
             @Override

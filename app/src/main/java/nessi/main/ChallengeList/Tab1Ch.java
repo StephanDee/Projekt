@@ -1,5 +1,6 @@
 package nessi.main.ChallengeList;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,8 @@ public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListene
     ListView listViewChallenges;
     List<Challenge> challengeList;
 
+    ProgressDialog progressDialog;
+
     // Initialize the DatabaseReference
     DatabaseReference databaseChallenges;
 
@@ -40,10 +43,15 @@ public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListene
 
         final View rootView = inflater.inflate(R.layout.fragment_tab1ch, container, false);
 
+        progressDialog = new ProgressDialog(getActivity());
+
         databaseChallenges = FirebaseDatabase.getInstance().getReference("challenges");
 
         listViewChallenges = (ListView) rootView.findViewById(R.id.listCh);
         challengeList = new ArrayList<>();
+
+        progressDialog.setMessage("loading...");
+        progressDialog.show();
 
         listViewChallenges.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,7 +62,6 @@ public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListene
                 executorScreen.putExtra("reward", challenge.getchallengeReward());
                 executorScreen.putExtra("description", challenge.getchallengeText());
                 startActivity(executorScreen);
-                // startActivity(new Intent(getActivity(), ExecutorScreen.class));
             }
         });
 
@@ -72,6 +79,7 @@ public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListene
 
                 ChallengeListe adapter = new ChallengeListe(getActivity(), challengeList);
                 listViewChallenges.setAdapter(adapter);
+                progressDialog.dismiss();
             }
 
             @Override
