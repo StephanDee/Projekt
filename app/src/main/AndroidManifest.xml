@@ -54,15 +54,6 @@
                 android:value="nessi.main.ChallengeListScreen" />
         </activity>
         <activity
-            android:name="nessi.main.Challenger"
-            android:label="@string/title_activity_challenger"
-            android:parentActivityName="nessi.main.ChallengeListScreen"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="nessi.main.ChallengeListScreen" />
-        </activity>
-        <activity
             android:name="nessi.main.Executor"
             android:label="@string/title_activity_executor"
             android:parentActivityName="nessi.main.homescreen"

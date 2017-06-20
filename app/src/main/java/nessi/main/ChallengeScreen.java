@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
@@ -40,10 +42,12 @@ public class ChallengeScreen extends AppCompatActivity {
 
         savedInstanceState = getIntent().getExtras();
 
+        String getUser = savedInstanceState.getString("user");
         String getTitle = savedInstanceState.getString("title");
-        String getReward = savedInstanceState.getString("reward");
+        Integer getReward = savedInstanceState.getInt("reward");
         String getDescription = savedInstanceState.getString("description");
 
+        textViewChallenger = (TextView) findViewById(R.id.textViewChallengeChallenger);
         textViewTitle = (TextView) findViewById(R.id.textViewChallengeTitle);
         textViewReward = (TextView) findViewById(R.id.textViewChallengeReward);
         textViewDescription = (TextView) findViewById(R.id.textViewChallengeDescription);
@@ -51,8 +55,9 @@ public class ChallengeScreen extends AppCompatActivity {
         buttonPlay = (Button) findViewById(R.id.buttonPlay);
         buttonStop = (Button) findViewById(R.id.buttonStop);
 
+        textViewChallenger.setText(getUser);
         textViewTitle.setText(getTitle);
-        textViewReward.setText(getReward);
+        textViewReward.setText(getReward.toString());
         textViewDescription.setText(getDescription);
 
         buttonPlay.setOnClickListener(new View.OnClickListener() {
@@ -60,25 +65,15 @@ public class ChallengeScreen extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                //stopPosition = videoViewChallenge.getCurrentPosition();
-
-//                if (!alreadyClicked) {
                 Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.spicychallenge);
                 videoViewChallenge.setVideoURI(uri);
-                //videoViewChallenge.seekTo(stopPosition);
                 videoViewChallenge.start();
-//                    alreadyClicked = true;
-//                } else {
-//                    videoViewChallenge.resume();
-//                    alreadyClicked = false;
-//                }
             }
         });
 
         buttonStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // stopPosition = videoViewChallenge.getCurrentPosition();
                 videoViewChallenge.pause();
             }
         });

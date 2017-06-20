@@ -40,19 +40,22 @@ public class ExecutorScreen extends AppCompatActivity {
 
         savedInstanceState = getIntent().getExtras();
 
+        String getUser = savedInstanceState.getString("user");
         String getTitle = savedInstanceState.getString("title");
-        String getReward = savedInstanceState.getString("reward");
+        Integer getReward = savedInstanceState.getInt("reward");
         String getDescription = savedInstanceState.getString("description");
 
         textViewTitle = (TextView) findViewById(R.id.textViewChallengeTitle);
+        textViewChallenger = (TextView) findViewById(R.id.textViewChallengeChallenger);
         textViewReward = (TextView) findViewById(R.id.textViewChallengeReward);
         textViewDescription = (TextView) findViewById(R.id.textViewChallengeDescription);
         videoViewChallenge = (VideoView) findViewById(R.id.videoViewChallenge);
         buttonPlay = (Button) findViewById(R.id.buttonPlay);
         buttonStop = (Button) findViewById(R.id.buttonStop);
 
+        textViewChallenger.setText(getUser);
         textViewTitle.setText(getTitle);
-        textViewReward.setText(getReward);
+        textViewReward.setText(getReward.toString());
         textViewDescription.setText(getDescription);
 
         buttonPlay.setOnClickListener(new View.OnClickListener() {

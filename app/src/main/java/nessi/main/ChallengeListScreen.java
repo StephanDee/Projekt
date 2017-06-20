@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,8 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +30,7 @@ import java.util.List;
 
 import nessi.main.ChallengeList.Challenge;
 import nessi.main.ChallengeList.ChallengeListe;
+import nessi.main.HallOfFameList.Users;
 
 /**
  * This class represents the ChallengeListScreen.
@@ -37,11 +42,18 @@ public class ChallengeListScreen extends AppCompatActivity {
     ImageButton buttonAdd;
     ListView listViewChallenges;
     List<Challenge> challengeList;
+    List<Users> userList;
 
     ProgressDialog progressDialog;
 
-    // Initialize the DatabaseReference
+    // Initialize the challengeDatabaseReference
     DatabaseReference databaseChallenges;
+
+    // Initialize userDatabaseReference
+    DatabaseReference databaseUsers;
+
+    // Initialize the FirebaseAuth
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +63,14 @@ public class ChallengeListScreen extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
 
         databaseChallenges = FirebaseDatabase.getInstance().getReference("challenges");
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         buttonAdd = (ImageButton) findViewById(R.id.imageButtonAddChallenge);
         listViewChallenges = (ListView) findViewById(R.id.listViewChallenges);
         challengeList = new ArrayList<>();
+        userList = new ArrayList<>();
 
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +93,7 @@ public class ChallengeListScreen extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Challenge challenge = challengeList.get(i);
                 Intent challengeScreen = new Intent(getApplicationContext(), ChallengeScreen.class);
+                challengeScreen.putExtra("user", challenge.getchallengeCreator());
                 challengeScreen.putExtra("title", challenge.getchallengeTitle());
                 challengeScreen.putExtra("reward", challenge.getchallengeReward());
                 challengeScreen.putExtra("description", challenge.getchallengeText());
@@ -113,6 +130,25 @@ public class ChallengeListScreen extends AppCompatActivity {
 
             }
         });
+
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                userList.clear();
+
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    Users user = userSnapshot.getValue(Users.class);
+
+                    userList.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void showAddDialog() {
@@ -124,7 +160,7 @@ public class ChallengeListScreen extends AppCompatActivity {
 
         final EditText editTitle = (EditText) dialogView.findViewById(R.id.editTitle);
         final EditText editDescription = (EditText) dialogView.findViewById(R.id.editDescription);
-        final EditText editReward = (EditText) dialogView.findViewById(R.id.editReward);
+        final SeekBar seekBarReward = (SeekBar) dialogView.findViewById(R.id.seekBarReward);
         final Button buttonAddChallenge = (Button) dialogView.findViewById(R.id.buttonAddChallenge);
 
         final AlertDialog alertDialog = dialogBuilder.create();
@@ -136,7 +172,7 @@ public class ChallengeListScreen extends AppCompatActivity {
 
                 String title = editTitle.getText().toString().trim();
                 String description = editDescription.getText().toString().trim();
-                String reward = editReward.getText().toString().trim();
+                Integer reward = seekBarReward.getProgress();
 
                 if (TextUtils.isEmpty(title)) {
                     editTitle.setError("Title required");
@@ -146,18 +182,26 @@ public class ChallengeListScreen extends AppCompatActivity {
                     editDescription.setError("Description required");
                     return;
                 }
-                if (TextUtils.isEmpty(reward)) {
-                    editReward.setError("Reward required");
-                    return;
+
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                String userData = user.getUid().trim();
+                // Toast.makeText(getApplication(), userData, Toast.LENGTH_LONG).show();
+
+                for (int i = 0; i < userList.size(); i++) {
+                    Users userDatabase = userList.get(i);
+                    if (userDatabase.getUserId().trim().equals(userData)) {
+                        String creator = userDatabase.getUserName();
+                        String uid = userDatabase.getUserId();
+
+                        String id = databaseChallenges.push().getKey();
+                        Challenge challenge = new Challenge(id, uid, creator, title, reward, description);
+
+                        databaseChallenges.child(id).setValue(challenge);
+
+                        addChallenge();
+                        alertDialog.dismiss();
+                    }
                 }
-
-                String id = databaseChallenges.push().getKey();
-                Challenge challenge = new Challenge(id, title, reward, description);
-
-                databaseChallenges.child(id).setValue(challenge);
-
-                addChallenge();
-                alertDialog.dismiss();
             }
         });
     }
@@ -169,7 +213,7 @@ public class ChallengeListScreen extends AppCompatActivity {
         Toast.makeText(this, "Challenge created", Toast.LENGTH_LONG).show();
     }
 
-    private void showUpdateDeleteDialog(final String challengeId, String challengeTitle, String challengeReward, String challengeDescription) {
+    private void showUpdateDeleteDialog(final String challengeId, String challengeTitle, Integer challengeReward, String challengeDescription) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -178,8 +222,8 @@ public class ChallengeListScreen extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final EditText editTextTitle = (EditText) dialogView.findViewById(R.id.editTextTitle);
-        final EditText editTextReward = (EditText) dialogView.findViewById(R.id.editTextReward);
         final EditText editTextDescription = (EditText) dialogView.findViewById(R.id.editTextDescription);
+        final SeekBar seekBarReward = (SeekBar) dialogView.findViewById(R.id.seekBarReward);
         final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdate);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDelete);
 
@@ -188,19 +232,18 @@ public class ChallengeListScreen extends AppCompatActivity {
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
 
+        final FirebaseUser user = firebaseAuth.getCurrentUser();
+
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String title = editTextTitle.getText().toString().trim();
-                String reward = editTextReward.getText().toString().trim();
                 String description = editTextDescription.getText().toString().trim();
+                Integer reward = seekBarReward.getProgress();
 
                 if (TextUtils.isEmpty(title)) {
                     editTextTitle.setError("Title required");
-                    return;
-                }
-                if (TextUtils.isEmpty(reward)) {
-                    editTextReward.setError("Reward required");
                     return;
                 }
                 if (TextUtils.isEmpty(description)) {
@@ -208,8 +251,20 @@ public class ChallengeListScreen extends AppCompatActivity {
                     return;
                 }
 
-                updateChallenge(challengeId, title, reward, description);
-                alertDialog.dismiss();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                String userData = user.getUid().trim();
+                // Toast.makeText(getApplication(), userData, Toast.LENGTH_LONG).show();
+
+                for (int i = 0; i < userList.size(); i++) {
+                    Users userDatabase = userList.get(i);
+                    if (userDatabase.getUserId().trim().equals(userData)) {
+                        String creator = userDatabase.getUserName();
+                        String uid = userDatabase.getUserId();
+
+                        updateChallenge(challengeId, uid, creator, title, reward, description);
+                        alertDialog.dismiss();
+                    }
+                }
             }
         });
 
@@ -223,10 +278,10 @@ public class ChallengeListScreen extends AppCompatActivity {
 
     }
 
-    private void updateChallenge(String id, String title, String reward, String description) {
+    private void updateChallenge(String id, String uid, String creator, String title, Integer reward, String description) {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("challenges").child(id);
-        Challenge challenge = new Challenge(id, title, reward, description);
+        Challenge challenge = new Challenge(id, uid, creator, title, reward, description);
 
         databaseReference.setValue(challenge);
 

@@ -12,7 +12,7 @@
         android:background="@color/opaBlack">
 
         <TextView
-            android:id="@+id/TextViewChallengeChallenger"
+            android:id="@+id/textViewChallengeChallenger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="6.5dp"

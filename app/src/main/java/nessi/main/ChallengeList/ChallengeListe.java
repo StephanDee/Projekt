@@ -39,13 +39,14 @@ public class ChallengeListe extends ArrayAdapter<Challenge> {
 
         View listViewItem = inflater.inflate(R.layout.challengelist_layout, null, true);
 
+        TextView textViewCreator = (TextView) listViewItem.findViewById(R.id.textViewCreator);
         TextView textViewTitle = (TextView) listViewItem.findViewById(R.id.textViewTitle);
         TextView textViewReward = (TextView) listViewItem.findViewById(R.id.textViewReward);
         TextView textViewDescription = (TextView) listViewItem.findViewById(R.id.textViewDescription);
 
         Challenge challenge = challengeList.get(position);
 
-        // textViewTitle.setText(String.format("%s%s", context.getString(R.string.titleitem), challenge.getchallengeTitle()));
+        textViewCreator.setText(String.format("%s%s", context.getString(R.string.creator), challenge.getchallengeCreator()));
         textViewTitle.setText(challenge.getchallengeTitle());
         textViewReward.setText(String.format("%s%s", context.getString(R.string.rewarditem), challenge.getchallengeReward()));
         textViewDescription.setText(challenge.getchallengeText());

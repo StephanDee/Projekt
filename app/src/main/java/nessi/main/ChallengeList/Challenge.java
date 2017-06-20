@@ -8,24 +8,30 @@ package nessi.main.ChallengeList;
 public class Challenge {
 
     private String challengeId;
+    private String userId;
+    private String challengeCreator;
     private String challengeTitle;
-    private String challengeReward;
+    private Integer challengeReward;
     private String challengeText;
 
     public Challenge() {
-
+        // Empty Constructor for database value event listener
     }
 
     /**
      * Constructor implements the Challenge.
      *
-     * @param challengeId Id
-     * @param challengeTitle Title
-     * @param challengeReward Reward in Points
-     * @param challengeText Description
+     * @param challengeId      Id
+     * @param userId           user id
+     * @param challengeCreator Creator
+     * @param challengeTitle   Title
+     * @param challengeReward  Reward in Points
+     * @param challengeText    Description
      */
-    public Challenge(String challengeId, String challengeTitle, String challengeReward, String challengeText) {
+    public Challenge(String challengeId, String userId, String challengeCreator, String challengeTitle, Integer challengeReward, String challengeText) {
         this.challengeId = challengeId;
+        this.userId = userId;
+        this.challengeCreator = challengeCreator;
         this.challengeTitle = challengeTitle;
         this.challengeReward = challengeReward;
         this.challengeText = challengeText;
@@ -35,11 +41,19 @@ public class Challenge {
         return challengeId;
     }
 
+    public String getuserId() {
+        return userId;
+    }
+
+    public String getchallengeCreator() {
+        return challengeCreator;
+    }
+
     public String getchallengeTitle() {
         return challengeTitle;
     }
 
-    public String getchallengeReward() {
+    public Integer getchallengeReward() {
         return challengeReward;
     }
 

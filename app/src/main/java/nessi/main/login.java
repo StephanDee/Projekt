@@ -17,10 +17,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
+
+import nessi.main.HallOfFameList.Users;
 
 public class login extends AppCompatActivity {
 
@@ -28,10 +31,10 @@ public class login extends AppCompatActivity {
     EditText etUsername;
     EditText etPassword;
 
-    // Initialize the DatabaseReference
-    // DatabaseReference databaseUsers;
-
     ProgressDialog progressDialog;
+
+    // Initialize the DatabaseReference
+    DatabaseReference databaseUsers;
 
     // Initialize the AuthReference
     FirebaseAuth firebaseAuth;
@@ -41,10 +44,10 @@ public class login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         firebaseAuth = FirebaseAuth.getInstance();
 
-        if(firebaseAuth.getCurrentUser() != null){
+        if (firebaseAuth.getCurrentUser() != null) {
             //profile acitvity here
             finish();
             startActivity(new Intent(getApplicationContext(), homescreen.class));
@@ -75,7 +78,7 @@ public class login extends AppCompatActivity {
         });
     }
 
-    public void userLogin(){
+    public void userLogin() {
         String email = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
@@ -90,22 +93,22 @@ public class login extends AppCompatActivity {
             return;
         }
 
-        progressDialog.setMessage("Registering...");
+        progressDialog.setMessage("Signing in...");
         progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                progressDialog.dismiss();
-                if(task.isSuccessful()){
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), homescreen.class));
-                } else {
-                    addUserError();
-                }
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressDialog.dismiss();
+                        if (task.isSuccessful()) {
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), homescreen.class));
+                        } else {
+                            addUserError();
+                        }
+                    }
+                });
 
 
     }
@@ -119,13 +122,10 @@ public class login extends AppCompatActivity {
 
         final ProgressDialog progressDialog = new ProgressDialog(this);
 
+        final EditText editTextNickname = (EditText) dialogView.findViewById(R.id.editTextNickname);
         final EditText editTextEmail = (EditText) dialogView.findViewById(R.id.editTextName);
         final EditText editTextPassword = (EditText) dialogView.findViewById(R.id.editTextPassword);
         final Button buttonCreateUser = (Button) dialogView.findViewById(R.id.buttonCreateUser);
-
-//        final EditText editTextName = (EditText) dialogView.findViewById(R.id.editTextName);
-//        final EditText editTextPassword = (EditText) dialogView.findViewById(R.id.editTextPassword);
-//        final Button buttonCreateUser = (Button) dialogView.findViewById(R.id.buttonCreateUser);
 
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
@@ -134,9 +134,14 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = editTextEmail.getText().toString().trim();
-                String password = editTextPassword.getText().toString().trim();
+                final String nickname = editTextNickname.getText().toString().trim();
+                final String email = editTextEmail.getText().toString().trim();
+                final String password = editTextPassword.getText().toString().trim();
 
+                if (TextUtils.isEmpty(nickname)) {
+                    editTextNickname.setError("Nickname required");
+                    return;
+                }
                 if (TextUtils.isEmpty(email)) {
                     editTextEmail.setError("Email required");
                     return;
@@ -145,46 +150,34 @@ public class login extends AppCompatActivity {
                     editTextPassword.setError("Password required");
                     return;
                 }
-                 progressDialog.setMessage("Registering Account...");
-                 progressDialog.show();
+                progressDialog.setMessage("Registering Account...");
+                progressDialog.show();
 
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            addUser();
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), homescreen.class));
-                        } else {
-                            addUserError();
-                        }
-                        progressDialog.dismiss();
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
+                                    Integer points = 1000;
+                                    String rank = "bronze.jpg";
+
+                                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                    String userId = firebaseUser.getUid();
+                                    Users user = new Users(userId, email, nickname, password, points, rank);
+
+                                    databaseUsers.child(userId).setValue(user);
+
+                                    addUser();
+                                    finish();
+                                    startActivity(new Intent(getApplicationContext(), homescreen.class));
+                                } else {
+                                    addUserError();
+                                }
+                                progressDialog.dismiss();
+                            }
+                        });
                 alertDialog.dismiss();
-
-
-//                String name = editTextName.getText().toString().trim();
-//                String password = editTextPassword.getText().toString().trim();
-//                String rank = "1000";
-//                if(TextUtils.isEmpty(name)){
-//                    editTextName.setError("Name required");
-//                    return;
-//                }
-//                if (TextUtils.isEmpty(password)){
-//                    editTextPassword.setError("Password required");
-//                    return;
-//                }
-//
-//                String id = databaseUsers.push().getKey();
-//                Users user  = new Users(id, name, password, rank);
-//
-//                databaseUsers.child(id).setValue(user);
-//
-//                addUser();
-//                alertDialog.dismiss();
             }
         });
     }
