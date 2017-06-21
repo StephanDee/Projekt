@@ -9,21 +9,21 @@ public class Users {
     private Integer userPoints;
     private String userRank;
 
-    public Users(){
+    public Users() {
         // Empty Constructor for database value event listener
     }
 
     /**
      * Constructor implements the User.
      *
-     * @param userId Id
-     * @param userEmail Email
-     * @param userName Name
+     * @param userId       Id
+     * @param userEmail    Email
+     * @param userName     Name
      * @param userPassword Password
-     *                     @param userPoints Points, Rewards will be added here after successful challenge
-     * @param userRank Rank
+     * @param userPoints   Points, Rewards will be added here after successful challenge
+     * @param userRank     Rank
      */
-    public Users(String userId, String userEmail, String userName,String userPassword, Integer userPoints, String userRank) {
+    public Users(String userId, String userEmail, String userName, String userPassword, Integer userPoints, String userRank) {
 
         this.userId = userId;
         this.userEmail = userEmail;
@@ -37,7 +37,9 @@ public class Users {
         return userId;
     }
 
-    public String getUserEmail() { return userEmail; }
+    public String getUserEmail() {
+        return userEmail;
+    }
 
     public String getUserName() {
         return userName;
@@ -47,7 +49,9 @@ public class Users {
         return userPassword;
     }
 
-    public Integer getUserPoints() { return userPoints; }
+    public Integer getUserPoints() {
+        return userPoints;
+    }
 
     public String getUserRank() {
         return userRank;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -64,7 +64,6 @@ public class ChallengeListScreen extends AppCompatActivity {
 
         databaseChallenges = FirebaseDatabase.getInstance().getReference("challenges");
         databaseUsers = FirebaseDatabase.getInstance().getReference("users");
-
         firebaseAuth = FirebaseAuth.getInstance();
 
         buttonAdd = (ImageButton) findViewById(R.id.imageButtonAddChallenge);
@@ -93,6 +92,7 @@ public class ChallengeListScreen extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Challenge challenge = challengeList.get(i);
                 Intent challengeScreen = new Intent(getApplicationContext(), ChallengeScreen.class);
+                challengeScreen.putExtra("id", challenge.getchallengeId());
                 challengeScreen.putExtra("user", challenge.getchallengeCreator());
                 challengeScreen.putExtra("title", challenge.getchallengeTitle());
                 challengeScreen.putExtra("reward", challenge.getchallengeReward());
@@ -115,10 +115,15 @@ public class ChallengeListScreen extends AppCompatActivity {
 
                 challengeList.clear();
 
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
+                String userData = user.getUid().trim();
+
                 for (DataSnapshot challengeSnapshot : dataSnapshot.getChildren()) {
                     Challenge challenge = challengeSnapshot.getValue(Challenge.class);
 
-                    challengeList.add(challenge);
+                    if(challenge.getuserId().equals(userData)) {
+                        challengeList.add(challenge);
+                    }
                 }
                 ChallengeListe adapter = new ChallengeListe(ChallengeListScreen.this, challengeList);
                 listViewChallenges.setAdapter(adapter);
@@ -160,11 +165,29 @@ public class ChallengeListScreen extends AppCompatActivity {
 
         final EditText editTitle = (EditText) dialogView.findViewById(R.id.editTitle);
         final EditText editDescription = (EditText) dialogView.findViewById(R.id.editDescription);
+        final TextView textViewReward = (TextView) dialogView.findViewById(R.id.textViewReward);
         final SeekBar seekBarReward = (SeekBar) dialogView.findViewById(R.id.seekBarReward);
         final Button buttonAddChallenge = (Button) dialogView.findViewById(R.id.buttonAddChallenge);
 
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
+
+        seekBarReward.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textViewReward.setText(String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         buttonAddChallenge.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,6 +246,7 @@ public class ChallengeListScreen extends AppCompatActivity {
 
         final EditText editTextTitle = (EditText) dialogView.findViewById(R.id.editTextTitle);
         final EditText editTextDescription = (EditText) dialogView.findViewById(R.id.editTextDescription);
+        final TextView textViewReward = (TextView) dialogView.findViewById(R.id.textViewReward);
         final SeekBar seekBarReward = (SeekBar) dialogView.findViewById(R.id.seekBarReward);
         final Button buttonUpdate = (Button) dialogView.findViewById(R.id.buttonUpdate);
         final Button buttonDelete = (Button) dialogView.findViewById(R.id.buttonDelete);
@@ -232,7 +256,22 @@ public class ChallengeListScreen extends AppCompatActivity {
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
 
-        final FirebaseUser user = firebaseAuth.getCurrentUser();
+        seekBarReward.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                textViewReward.setText(String.valueOf(i));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,17 +314,17 @@ public class ChallengeListScreen extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-
     }
 
-    private void updateChallenge(String id, String uid, String creator, String title, Integer reward, String description) {
+    private boolean updateChallenge(String id, String uid, String creator, String title, Integer reward, String description) {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("challenges").child(id);
         Challenge challenge = new Challenge(id, uid, creator, title, reward, description);
 
         databaseReference.setValue(challenge);
 
-        Toast.makeText(this, "Challenge Updated Successfully", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Challenge Updated", Toast.LENGTH_LONG).show();
+        return true;
     }
 
     private boolean deleteChallenge(String id) {
@@ -295,6 +334,12 @@ public class ChallengeListScreen extends AppCompatActivity {
 
         //removing challenge
         dR.removeValue();
+
+        // getting the specified executor
+        DatabaseReference dRexecutor = FirebaseDatabase.getInstance().getReference("executors").child(id);
+
+        //removing executors
+        dRexecutor.removeValue();
 
         Toast.makeText(getApplicationContext(), "Challenge Deleted", Toast.LENGTH_LONG).show();
 

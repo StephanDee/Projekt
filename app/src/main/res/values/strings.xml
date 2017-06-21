@@ -15,6 +15,7 @@
     <string name="titleitem">Title:\u0020</string>
     <string name="rewarditem">Reward:\u0020</string>
     <string name="descriptionitem">Description:\u0020</string>
+    <string name="pointsitem">Points:\u0020</string>
 
     <!-- Challenge update -->
     <string name="titlehead">Title</string>
@@ -37,6 +38,7 @@
     <string name="buttonPlay">play</string>
     <string name="buttonStop">stop</string>
     <string name="creator">Challenger:\u0020</string>
+    <string name="executors">Executor</string>
 
     <!-- Names -->
     <string-array name="Member_names">

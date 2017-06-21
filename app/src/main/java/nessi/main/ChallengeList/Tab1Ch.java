@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,11 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import nessi.main.ChallengeScreen;
 import nessi.main.ExecutorScreen;
 import nessi.main.R;
 
-public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListener*/ {
+public class Tab1Ch extends Fragment {
 
     ListView listViewChallenges;
     List<Challenge> challengeList;
@@ -60,6 +57,7 @@ public class Tab1Ch extends Fragment /*implements AdapterView.OnItemClickListene
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Challenge challenge = challengeList.get(i);
                 Intent executorScreen = new Intent(getActivity(), ExecutorScreen.class);
+                executorScreen.putExtra("id", challenge.getchallengeId());
                 executorScreen.putExtra("user", challenge.getchallengeCreator());
                 executorScreen.putExtra("title", challenge.getchallengeTitle());
                 executorScreen.putExtra("reward", challenge.getchallengeReward());
