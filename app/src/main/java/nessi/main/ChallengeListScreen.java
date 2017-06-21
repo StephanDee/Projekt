@@ -93,6 +93,7 @@ public class ChallengeListScreen extends AppCompatActivity {
                 Challenge challenge = challengeList.get(i);
                 Intent challengeScreen = new Intent(getApplicationContext(), ChallengeScreen.class);
                 challengeScreen.putExtra("id", challenge.getchallengeId());
+                challengeScreen.putExtra("userid", challenge.getuserId());
                 challengeScreen.putExtra("user", challenge.getchallengeCreator());
                 challengeScreen.putExtra("title", challenge.getchallengeTitle());
                 challengeScreen.putExtra("reward", challenge.getchallengeReward());

@@ -48,9 +48,22 @@ public class ChallengeScreen extends AppCompatActivity {
     // Initialize the DatabaseReference
     DatabaseReference databaseExecutors;
 
+    // Initialize userDatabaseReference
+//    DatabaseReference databaseUsers;
+
+    // Initialize the FirebaseAuth
+//    FirebaseAuth firebaseAuth;
+
     List<Executors> executorList;
+//    List<Users> userList;
 
     String getId;
+    String getUserId;
+    String getUser;
+    String getTitle;
+    Integer getReward;
+    String getDescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +75,15 @@ public class ChallengeScreen extends AppCompatActivity {
         savedInstanceState = getIntent().getExtras();
 
         getId = savedInstanceState.getString("id");
-        String getUser = savedInstanceState.getString("user");
-        String getTitle = savedInstanceState.getString("title");
-        Integer getReward = savedInstanceState.getInt("reward");
-        String getDescription = savedInstanceState.getString("description");
+        getUserId = savedInstanceState.getString("userid");
+        getUser = savedInstanceState.getString("user");
+        getTitle = savedInstanceState.getString("title");
+        getReward = savedInstanceState.getInt("reward");
+        getDescription = savedInstanceState.getString("description");
 
         databaseExecutors = FirebaseDatabase.getInstance().getReference("executors").child(getId);
+//        databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+//        firebaseAuth = FirebaseAuth.getInstance();
 
         textViewChallenger = (TextView) findViewById(R.id.textViewChallengeChallenger);
         textViewTitle = (TextView) findViewById(R.id.textViewChallengeTitle);
@@ -78,6 +94,8 @@ public class ChallengeScreen extends AppCompatActivity {
         buttonStop = (Button) findViewById(R.id.buttonStop);
 
         executorList = new ArrayList<>();
+//        userList = new ArrayList<>();
+
         listViewExecutors = (ListView) findViewById(R.id.listViewExecutors);
 
         textViewChallenger.setText(getUser);
@@ -94,9 +112,30 @@ public class ChallengeScreen extends AppCompatActivity {
             }
         });
 
-        buttonPlay.setOnClickListener(new View.OnClickListener() {
-//            boolean alreadyClicked = false;
+//        buttonAccept.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                DatabaseReference dRexecutor = FirebaseDatabase.getInstance().getReference("executors").child(getId);
+////                Executors executor = new Executors();
+////
+////                // DatabaseReference dRChallenge = FirebaseDatabase.getInstance().getReference("challenges").child(getId);
+////                // Challenge challenge = new Challenge(getId, getUserId, getUser, getTitle, getReward, getDescription);
+////
+////                final FirebaseUser users = firebaseAuth.getCurrentUser();
+////                String userData = users.getUid().trim();
+////
+////                for (int i = 0; i < userList.size(); i++) {
+////                    Users userDatabase = userList.get(i);
+////                    if (userDatabase.getUserId().trim().equals(userData)) {
+////
+////                        // DatabaseReference dRUsers = FirebaseDatabase.getInstance().getReference("users").child(getUserId);
+////                        Users user = new Users(userDatabase.getUserId(), userDatabase.getUserEmail(), userDatabase.getUserName(), userDatabase.getUserPassword(), userDatabase.getUserPoints() + getReward, userDatabase.getUserRank());
+////                    }
+////                }
+//            }
+//        });
 
+        buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.spicychallenge);
@@ -140,10 +179,29 @@ public class ChallengeScreen extends AppCompatActivity {
 
             }
         });
+
+//        databaseUsers.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                userList.clear();
+//
+//                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+//                    Users user = userSnapshot.getValue(Users.class);
+//
+//                    userList.add(user);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
     }
 
 
-    private void showDeleteDialog(final String executorId,final String userId, String name, Integer points) {
+    private void showDeleteDialog(final String executorId, final String userId, String name, Integer points) {
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
